@@ -1,7 +1,7 @@
 = JUDE utilities
 
 # Author:: tckz <at.tckz@gmail.com> 
-# URL:: http://passing.breeze.cc
+# URL:: http://passing.breeze.cc/mt/
 
 * 本プログラム/xls文書は無保証です
 * 作者は、プログラム自身のバグあるいは本プログラムの実行などから
