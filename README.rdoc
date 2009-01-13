@@ -52,11 +52,11 @@
 
 * 実行例：(linux)
 
-  % ruby actor_list.rb 引数・・・
+   % ruby actor_list.rb 引数・・・
 
 * 実行例：(linux)
 
-  % jruby actor_list.rb 引数・・・
+   % jruby actor_list.rb 引数・・・
 
 === calc_fp.rb
 * ユースケース/エンティティ/CRUDからファンクションポイントを計数
