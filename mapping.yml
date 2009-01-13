@@ -1,0 +1,21 @@
+---
+
+# datatype and defaultvalue mappings for create_sql.rb
+#
+# example for PostgreSQL
+
+typemaps:
+  BOOL: bool
+  # < 8.3
+  ID: char(36)
+  # < 8.3
+  uuid: char(36)
+  string:  text
+  DateTime: timestamp with time zone
+
+defaultmaps:
+  'NOW()':  CURRENT_TIMESTAMP
+  'NEWID()':  ''
+
+# vi: ts=2 expandtab
+
