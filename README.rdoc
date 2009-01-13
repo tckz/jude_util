@@ -1,0 +1,178 @@
+= JUDE utilities
+
+# Author:: tckz <at.tckz@gmail.com> 
+# URL:: http://passing.breeze.cc
+
+* 本プログラム/xls文書は無保証です
+* 作者は、プログラム自身のバグあるいは本プログラムの実行などから
+  発生するいかなる結果/損害に対しても責任を持ちません
+* 作者は、xls文書の内容あるいは計算から発生する
+  いかなる結果/損害に対しても責任を持ちません
+* 作者は、本プログラム/xls文書に関するサポート義務を負いません
+* 本配布物の複製は自由です
+* プログラム/xls文書の改変、再配布は自由です
+
+== 作者の実行環境
+
+- OS: CentOS 5.2 i386
+  - libxml2: 2.6.26-2.1.2.7
+  - ruby: 1.8.5-5.el5_2.6
+    -  rubygems: 1.3.1
+    -  libxml-ruby: 0.9.7 (gem)
+  - JRE: Sun Java 1.6.0_07
+    -  jruby: 1.1.6
+    -  JUDE-Pro: 5.4
+
+= 実行方法
+
+* アーカイブを展開して配布物を取り出す
+* jrubyまたはrubyで実行
+
+== jruby専用
+
+* 以下のツールはJUDE-APIを使用するので、
+  環境変数CLASSPATHにjude-pro.jarの所在を設定して実行する
+* 実行例：(linux)
+
+   % env CLASSPATH=./jude-pro.jar jruby export_jude.rb 引数・・・
+
+=== add_identifier.rb
+* ERエンティティにidentifierな属性を一括付与する
+* http://passing.breeze.cc/mt/archives/2008/08/jude-api-jruby-1.html
+
+=== import_ermodel.rb
+* CSVファイルで記述したERエンティティをインポートする
+* http://passing.breeze.cc/mt/archives/2008/09/jude-api-jruby-2.html
+
+=== jude_export.rb
+* JUDE要素をXML出力
+* 後続のツールに入力するためのXMLを吐きます
+
+== jruby / ruby(要libxml-ruby)兼用
+
+* 実行例：(linux)
+
+  % ruby actor_list.rb 引数・・・
+
+* 実行例：(linux)
+
+  % jruby actor_list.rb 引数・・・
+
+=== calc_fp.rb
+* ユースケース/エンティティ/CRUDからファンクションポイントを計数
+* 同梱のFP-hinagata.xlsに貼り付けて使用
+* jude_export.rbで出力したXMLを入力します
+* http://passing.breeze.cc/mt/archives/2008/11/jude-fp.html
+
+=== actor_list.rb
+* <<actor>>なclassをTSV出力
+* jude_export.rbで出力したXMLを入力します
+
+=== usecase_list.rb
+* <<usecase>>をTSV出力
+* jude_export.rbで出力したXMLを入力します
+
+=== create_sql.rb
+* CREATE TABLE/INDEX, DROP TABLE/INDEX, ALTER TABLE(FK)なDDLを出力
+* テーブル属性一覧csv出力
+* JUDEが3.2あたりからSQLその他生成できるようになったため、ほぼ意味ない
+  * index関係ぐらいは意味ある、だったけど5.4で対応されちゃった
+* jude_export.rbで出力したXMLを入力します
+
+=== estimate_list.rb
+* <<boundary>>, <<control>>なclassをTSV出力
+* 画面（属性/操作）、処理（属性/操作）のリスト
+* 同梱のestimate_list.xlsに貼り付けて使用
+* jude_export.rbで出力したXMLを入力します
+
+=== model2crud.rb
+* CRUDから、エンティティそれぞれのCRUD操作の有無をTSV出力
+* オプションでモデルごとユースケースごとのCRUD操作を出力
+* jude_export.rbで出力したXMLを入力します
+
+= history
+
+- ****/**/** 5.4.0.4
+  - 実行環境更新
+    - libxml2: 2.6.26-2.1.2.7
+    - ruby: 1.8.5-5.el5_2.6
+    - rubygems: 1.3.1
+    - libxml-ruby: 0.9.7 (gem)
+    - jruby: 1.1.6
+
+- 2008/11/03 5.4.0.3
+  - jude_export.rb
+    - タグ付き値でなくgetAlias1()使用へ
+    - CRUDのエクスポートでモデルのIDも出力
+  - calc_fp.rb
+    - TFのDET計数変更
+  - model2crud.rb
+    - --use-alias1と--use-physical-name
+  - create_sql.rb
+    - create/drop indexでERIndexも併用
+  - FP-hinagata.xls
+    - 記入説明追記
+  - 実行環境更新
+    - libxml2: 2.6.26-2.1.2.6
+    - JUDE-Pro: 5.4
+
+- 2008/09/11 5.3.0.2
+  - import_ermodel.rb
+    - 入力CSVのデフォルトエンコードをshift_jisに変更
+  - make_csv.js
+    - xlsからcsv出力
+  - create_sql.rb
+    - 属性にPK指定があってもNN指定があればNN制約も付与に変更
+    - @aiアノテーション。MySQLのAUTO INCREMENT指定用
+  - 実行環境更新
+    - jruby: 1.1.4
+    - JRE: Sun Java 1.6.0_07
+
+- 2008/08/14 5.3.0.1
+  - add_identifier.rb
+    - 新規追加
+
+- 2008/07/01
+  - import_ermodel.rb
+    - 新規追加
+
+- 2008/04/28
+  - actor_list.rb
+    - 新規追加
+  - usecase_list.rb
+    - 新規追加
+
+- 2008/03/06
+  - estimate_list.rb
+    - make_mitsumori.rbから改名
+
+- 2007/12/26
+  - model2crud.rb
+    - 新規追加
+
+- 2007/12/19
+  - calc_fp.rb
+    - 新規追加
+  - FP-hinagata.xls
+    - 新規追加
+
+- 2007/12/04
+  - make_mitsumori.rb
+    - rubyで書換え
+
+- 2007/11/30
+  - create_sql.rb
+    - rubyで書換え
+
+- 2007/11/08
+  - jude_export.rb
+    - jrubyで書換え
+    - CSV->XML出力に変更
+
+- 2006/07/04
+  - java+perl版
+  - jude_export.jar
+  - create_sql.pl
+  - make_mitsumori.pl
+
+
