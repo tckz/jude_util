@@ -74,7 +74,20 @@ module	JudeUtil
 		# pretty::
 		#   フォーマット有無
 		def	write_document(doc, st, enc = "utf-8", omit_xml_decl=false, pretty=false)
-			st.write doc.to_s(pretty, enc)
+
+			# libxml-ruby 0.9.7, 0.9.8（知っている範囲で）
+			# :encoding にLibXML::XML::Encodingで定義されている定数が要求される
+			# エンコーディング名から定数を得るメソッドがあるようだが機能していないっぽい
+			# ので、暫定的にエンコーディング名を
+			#  ハイフンをアンダースコアに、
+			#  小文字を大文字に
+			# 置き換えたもので定数値を得ることに・・・
+			encoding = nil
+			name = enc.gsub(/-/, "_").upcase
+			if LibXML::XML::Encoding.const_defined?(name)
+				encoding = LibXML::XML::Encoding.const_get(name)
+			end
+			st.write doc.to_s(:indent => pretty, :encoding => encoding)
 		end
 	end
 end
