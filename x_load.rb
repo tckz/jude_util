@@ -5,6 +5,7 @@ $KCODE='u'
 require 'pp'
 require 'optparse'
 require 'ostruct'
+require 'iconv'
 
 $:.unshift(File.join(File.dirname(__FILE__), "lib"))
 require "xml_util"
@@ -23,6 +24,7 @@ options.out = nil
 options.fs = "\t"
 options.root = "results"
 options.pretty = false
+options.encode = "utf-8"
 
 OptionParser.new { |opt|
 	opt.banner = "usage: #{File.basename($0)} [options] [in.xml...]"
@@ -38,6 +40,9 @@ OptionParser.new { |opt|
 	end
 	opt.on("-o", "--out=FILENAME", "filename to output") do |v|
 		options.out = v
+	end
+	opt.on("-e", "--encoding=ENCODING-NAME", "default: #{options.encode}") do |v|
+		options.encode = v
 	end
 	opt.on("--root=TAG", "tagname of root element for output") do |v|
 		options.root = v
@@ -110,6 +115,8 @@ end
 out_doc = XMLUtil::XML::new_document
 out_doc.root = el_root = out_doc.create_element(options.root)
 
+iconv = Iconv.new(options.encode, "utf-8")
+
 ARGV.each {|fn_in|
 
 	doc = XMLUtil::XML::build_document(fn_in)
@@ -148,7 +155,8 @@ ARGV.each {|fn_in|
 			
 			if options.text
 				# テキストモードの場合、TSVスタイルで出力
-				st.print "#{result.join(options.fs)}\n"
+				# TODO: jrubyはこれだとだめ
+				st.print iconv.iconv("#{result.join(options.fs)}\n")
 			else
 				# XML出力の場合は、結果それぞれに対して・・・
 				result.each { |item|
@@ -172,7 +180,7 @@ ARGV.each {|fn_in|
 # 出力XMLを書き出す
 # テキストモードの場合、都度書き出しているので出力不要
 if !options.text
-	XMLUtil::XML::write_document(out_doc, st, "utf-8", false, options.pretty)
+	XMLUtil::XML::write_document(out_doc, st, options.encode, false, options.pretty)
 end
 
 exit 0
