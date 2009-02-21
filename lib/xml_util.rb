@@ -6,10 +6,14 @@
 
 $KCODE='u'
 
-if is_jruby?
-	require "lib/xml_util_java"
+begin
+	require 'java'
+rescue LoadError
+end
+if defined?(JavaUtilities)
+	require "xml_util/java"
 else
-	require "lib/xml_util_libxml"
+	require "xml_util/libxml"
 end
 
 

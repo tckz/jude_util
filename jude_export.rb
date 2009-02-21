@@ -14,12 +14,13 @@ require 'ostruct'
 require 'pp'
 require 'java'
 
-$:.unshift(File.dirname(__FILE__))
-require "lib/jude_util"
-require "lib/jude_api"
+$:.unshift(File.join(File.dirname(__FILE__), "lib"))
+require "jude_util"
+require "xml_util"
+require "jude_api_util"
 
 # JUDE要素固有処理クラス群
-require	"lib/exporter/specific"
+require	"lib/jude_util/element_specific/specific"
 
 # JUDE-APIからincludeするmodule
 module Jude
@@ -35,7 +36,7 @@ module	JudeUtil
 
     include JudeAPIUtil
     include JudeUtil
-    include JudeUtil::XML
+    include XMLUtil::XML
 
 		attr_accessor	:root
 
@@ -130,7 +131,7 @@ module	JudeUtil
 		# 生成されたXML文書を返す
 		def	export
 			# 空のXML文書とroot要素を作って、
-			doc = XML::new_document
+			doc = XMLUtil::XML::new_document
 			el_root = doc.createElement("jude")
 			el_root["util_version"] = JudeUtil::Version
 			el_root["jruby_version"] = JRUBY_VERSION
@@ -404,7 +405,7 @@ module	JudeUtil
 				if options.fn_out
 					opened = st = java.io.FileOutputStream.new(options.fn_out)
 				end
-				JudeUtil::XML::write_document(doc, st, options.encode)
+				XMLUtil::XML::write_document(doc, st, options.encode)
 
 				ec = 0
 			ensure
@@ -423,7 +424,7 @@ end
 
 if $0 == __FILE__
 	include JudeUtil
-	include JudeUtil::XML
+	include XMLUtil::XML
 	include JudeAPIUtil
 
 	Version = JudeUtil::Version

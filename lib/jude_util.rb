@@ -7,20 +7,11 @@
 $KCODE='u'
 
 def	is_jruby?
-	begin
-		require 'java'
-	rescue LoadError
-	end
-
-	if defined?(JavaUtilities)
-		return	true
-	end
-
-	false
+	defined?(JRUBY_VERSION)
 end
 
 require 'iconv'
-require "lib/xml_util"
+require "xml_util"
 
 module	JudeUtil
 	Version='5.4.1.5'

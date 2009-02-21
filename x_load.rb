@@ -6,12 +6,14 @@ require 'pp'
 require 'optparse'
 require 'ostruct'
 
-$:.unshift(File.dirname(__FILE__))
-require "lib/jude_util"
+$:.unshift(File.join(File.dirname(__FILE__), "lib"))
+require "xml_util"
 
+include	XMLUtil::XML
 
-include	JudeUtil
-include	JudeUtil::XML
+def	is_jruby?
+	defined?(JRUBY_VERSION)
+end
 
 options = OpenStruct.new
 options.text = false
@@ -105,12 +107,12 @@ if ARGV.size == 0
 	ARGV.push(nil)
 end
 
-out_doc = XML::new_document
+out_doc = XMLUtil::XML::new_document
 out_doc.root = el_root = out_doc.create_element(options.root)
 
 ARGV.each {|fn_in|
 
-	doc = XML::build_document(fn_in)
+	doc = XMLUtil::XML::build_document(fn_in)
 	if !options.xpath
 		# XPath指定がない場合
 		# 読み込んだdocを出力する
@@ -170,7 +172,7 @@ ARGV.each {|fn_in|
 # 出力XMLを書き出す
 # テキストモードの場合、都度書き出しているので出力不要
 if !options.text
-	XML::write_document(out_doc, st, "utf-8", false, options.pretty)
+	XMLUtil::XML::write_document(out_doc, st, "utf-8", false, options.pretty)
 end
 
 exit 0

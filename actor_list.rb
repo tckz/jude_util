@@ -11,8 +11,9 @@ require 'optparse'
 require 'ostruct'
 require 'pp'
 
-$:.unshift(File.dirname(__FILE__))
-require 'lib/jude_util'
+$:.unshift(File.join(File.dirname(__FILE__), "lib"))
+require 'jude_util'
+require 'xml_util'
 
 module	JudeUtil
 
@@ -149,7 +150,7 @@ module	JudeUtil
 
 			fn_in = argv[0]
 
-			doc = JudeUtil::XML::build_document(fn_in)
+			doc = XMLUtil::XML::build_document(fn_in)
 
 			fp_out = nil
 			begin
@@ -177,7 +178,7 @@ end
 
 if $0 == __FILE__
 	include	JudeUtil
-	include	JudeUtil::XML
+	include	XMLUtil::XML
 
 	Version = JudeUtil::Version
 	exit	JudeUtil::ActorList::main(ARGV)

@@ -130,7 +130,7 @@ end
 
 
 
-module	JudeUtil
+module	XMLUtil
 
 	module	XML
 

@@ -16,9 +16,9 @@ require 'csv'
 require 'iconv'
 require 'java'
 
-$:.unshift(File.dirname(__FILE__))
-require "lib/jude_util"
-require "lib/jude_api"
+$:.unshift(File.join(File.dirname(__FILE__), "lib"))
+require "jude_util"
+require "jude_api_util"
 
 module	JudeUtil
 

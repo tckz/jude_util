@@ -33,7 +33,7 @@ LibXML::XML::Node.class_eval do
 	end
 end
 
-module	JudeUtil
+module	XMLUtil
 
 	module	XML
 

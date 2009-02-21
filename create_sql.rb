@@ -12,8 +12,9 @@ require 'ostruct'
 require 'pp'
 require 'yaml'
 
-$:.unshift(File.dirname(__FILE__))
-require "lib/jude_util"
+$:.unshift(File.join(File.dirname(__FILE__), "lib"))
+require "jude_util"
+require "xml_util"
 
 
 module	JudeUtil
@@ -708,7 +709,7 @@ module	JudeUtil
 
 			fn_in = argv[0]
 
-			doc = XML::build_document(fn_in)
+			doc = XMLUtil::XML::build_document(fn_in)
 
 			fp_out = nil
 			if options.fn_out
@@ -775,7 +776,7 @@ end
 
 if $0 == __FILE__
 	include	JudeUtil
-	include	JudeUtil::XML
+	include	XMLUtil::XML
 
 	Version = JudeUtil::Version
 	exit	JudeUtil::SqlBuilder::main(ARGV)
