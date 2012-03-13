@@ -49,9 +49,7 @@ module	XMLUtil
 		#   ファイル名。nilの場合、stdinを適用
 		def build_document(fn_in)
 			if !fn_in
-				xp = LibXML::XML::Parser.new
-				xp.string = STDIN.read
-				doc = xp.parse
+				doc = LibXML::XML::Document.string(STDIN.read)
 			else
 				# XML読み込み
 				doc = LibXML::XML::Document.file(fn_in)
