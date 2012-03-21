@@ -14,7 +14,7 @@ require 'iconv'
 require "xml_util"
 
 module	JudeUtil
-	Version='5.5.2.5'
+	Version='6.5.1.6'
 
 	# エンティティを指す要素のリスト
 	# 
